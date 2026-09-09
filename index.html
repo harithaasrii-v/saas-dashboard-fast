@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operations Dashboard</title>
+    <style>
+      :root {
+        color: #18212f;
+        background: #f4f6f8;
+        font-family: system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      .home-view {
+        color: #65727c;
+        font-size: 14px;
+        font-family: system-ui, sans-serif;
+      }
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 25px;
+      }
+      #alerts-view > alert-list {
+        display: block;
+        max-width: 920px;
+        margin: 0 auto;
+      }
+      @media (max-width: 900px) {
+        .metric-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 520px) {
+        .metric-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <app-shell>
+      <!-- Home Section -->
+      <section class="home-view" data-section-view="home" aria-label="Home">
+        <div class="metric-grid" aria-label="Dashboard metrics">
+          <metric-card
+            data-metric="unique-users"
+            card-title="Unique recent users"
+          ></metric-card>
+          <metric-card
+            data-metric="response-time"
+            card-title="Avg. response time"
+          ></metric-card>
+          <metric-card
+            data-metric="active-alerts"
+            card-title="Active alerts"
+          ></metric-card>
+          <metric-card
+            data-metric="failure-rate"
+            card-title="Activity failure rate"
+          ></metric-card>
+        </div>
+        <service-status></service-status>
+      </section>
+
+      <!-- Activity Section -->
+      <section
+        class="activity-view"
+        data-section-view="activity"
+        aria-label="Activity"
+      >
+        <activity-table></activity-table>
+      </section>
+
+      <!-- Alerts Section -->
+      <section
+        class="activity-view"
+        data-section-view="alerts"
+        aria-label="Alerts"
+      >
+        <alert-list></alert-list>
+      </section>
+
+      <app-modal></app-modal>
+      <toast-container></toast-container>
+    </app-shell>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

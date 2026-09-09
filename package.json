@@ -1,0 +1,21 @@
+{
+  "name": "saas-dashboard-fast",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@microsoft/fast-element": "^3.0.2"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}
