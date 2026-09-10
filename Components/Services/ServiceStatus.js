@@ -210,7 +210,7 @@ class ServiceStatus extends FASTElement {
 
   async loadServices() {
     try {
-      const response = await fetch("./Data/services.json");
+      const response = await fetch("/Data/services.json");
       if (!response.ok)
         throw new Error(`Unable to load services (${response.status})`);
       this.data = await response.json();

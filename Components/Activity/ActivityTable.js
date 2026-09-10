@@ -402,7 +402,7 @@ class ActivityTable extends FASTElement {
 
   async loadActivities() {
     try {
-      const response = await fetch("./Data/activity.json");
+      const response = await fetch("/Data/activity.json");
       if (!response.ok)
         throw new Error(`Unable to load activity (${response.status})`);
       this.data = await response.json();
@@ -517,6 +517,9 @@ class ActivityTable extends FASTElement {
   "selectedActivity",
   "visibleCount",
   "pageSizeAttribute",
+  "visibleActivities",
+  "sortKey",
+  "sortDirection",
 ].forEach((property) =>
   Observable.defineProperty(ActivityTable.prototype, property),
 );

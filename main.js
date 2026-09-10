@@ -13,9 +13,9 @@ async function loadDashboardMetrics() {
   try {
     const [activityResponse, alertsResponse, servicesResponse] =
       await Promise.all([
-        fetch("./Data/activity.json"),
-        fetch("./Data/alerts.json"),
-        fetch("./Data/services.json"),
+        fetch("/Data/activity.json"),
+        fetch("/Data/alerts.json"),
+        fetch("/Data/services.json"),
       ]);
 
     if (
