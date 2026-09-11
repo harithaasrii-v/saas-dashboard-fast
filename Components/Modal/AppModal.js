@@ -3,11 +3,17 @@ import {
   Observable,
   css,
   html,
-  when,
+  ref,
 } from "@microsoft/fast-element";
 
 const template = html`
-  <dialog class="dialog" aria-labelledby="modal-title">
+  <dialog
+    class="dialog"
+    aria-labelledby="modal-title"
+    ${ref("dialog")}
+    @close="${(x) => x.onNativeClose()}"
+    @click="${(x, c) => c.event.target === x.dialog && x.dialog.close()}"
+  >
     <div class="modal-header">
       <h2 id="modal-title" class="modal-title">${(x) => x.serviceTitle}</h2>
       <button
@@ -37,7 +43,6 @@ const styles = css`
   :host {
     display: contents;
   }
-
   .dialog {
     position: relative;
     width: min(100%, 480px);
@@ -48,12 +53,10 @@ const styles = css`
     color: var(--shell-ink);
     box-shadow: 0 20px 60px rgba(8, 23, 28, 0.3);
   }
-
   .dialog::backdrop {
     background: rgba(10, 25, 35, 0.68);
     cursor: pointer;
   }
-
   .modal-header {
     display: flex;
     align-items: center;
@@ -61,13 +64,11 @@ const styles = css`
     gap: 1rem;
     margin-bottom: 1.25rem;
   }
-
   .modal-title {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 700;
   }
-
   .close-button {
     display: flex;
     align-items: center;
@@ -83,16 +84,13 @@ const styles = css`
     font-size: 0.9rem;
     transition: background 140ms ease;
   }
-
   .close-button:hover {
     background: var(--modal-hover, #f0f5f7);
   }
-
   .close-button:focus-visible {
     outline: 3px solid #4ca7b8;
     outline-offset: 2px;
   }
-
   .modal-body {
     display: flex;
     flex-direction: column;
@@ -100,34 +98,28 @@ const styles = css`
     overflow-y: auto;
     max-height: 60vh;
   }
-
   .service-details {
     display: grid;
     gap: 0.32rem;
   }
-
   .service-details p {
     margin: 0;
     color: var(--shell-muted);
     font-size: 0.82rem;
     line-height: 1.25;
   }
-
   .service-details span {
     font-weight: 500;
   }
-
   .service-description {
     margin: 0;
     color: var(--shell-muted);
     font-size: 0.82rem;
     line-height: 1.5;
   }
-
   :host([theme="dark"]) {
     --modal-hover: #263d45;
   }
-
   @media (max-width: 520px) {
     .dialog {
       padding: 1rem;
@@ -143,10 +135,6 @@ class AppModal extends FASTElement {
   serviceTitle = "Service Details";
   serviceData = null;
 
-  onKeyDown = (event) => {
-    if (event.key === "Escape" && this.isOpen) this.close();
-  };
-
   onServiceSelected = (event) => {
     const service = event.detail;
     if (!service) return;
@@ -157,31 +145,27 @@ class AppModal extends FASTElement {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener("keydown", this.onKeyDown);
     window.addEventListener("service-selected", this.onServiceSelected);
   }
 
   disconnectedCallback() {
-    window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("service-selected", this.onServiceSelected);
     super.disconnectedCallback();
   }
 
   show() {
     this.isOpen = true;
-    requestAnimationFrame(() => {
-      const dialog = this.shadowRoot?.querySelector(".dialog");
-      dialog?.showModal();
-      this.shadowRoot?.querySelector(".close-button")?.focus();
-    });
+    this.dialog.showModal();
+    this.dialog.querySelector(".close-button")?.focus();
+  }
+
+  onNativeClose() {
+    this.isOpen = false;
+    this.$emit("modal-closed");
   }
 
   close() {
-    if (!this.isOpen) return;
-    const dialog = this.shadowRoot?.querySelector(".dialog");
-    dialog?.close();
-    this.isOpen = false;
-    this.$emit("modal-closed");
+    this.dialog?.close();
   }
 }
 

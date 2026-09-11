@@ -192,7 +192,6 @@ class ServiceStatus extends FASTElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.loadServices();
   }
 
   statusChanged(oldValue, newValue) {
@@ -206,18 +205,6 @@ class ServiceStatus extends FASTElement {
 
   get data() {
     return this.services;
-  }
-
-  async loadServices() {
-    try {
-      const response = await fetch("/Data/services.json");
-      if (!response.ok)
-        throw new Error(`Unable to load services (${response.status})`);
-      this.data = await response.json();
-    } catch (error) {
-      this.visibleServices = [];
-      console.error(error);
-    }
   }
 
   applyFilter() {

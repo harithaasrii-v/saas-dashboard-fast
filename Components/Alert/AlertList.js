@@ -120,22 +120,10 @@ class AlertList extends FASTElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.loadAlerts();
   }
 
   filterChanged(oldValue, newValue) {
     if (oldValue !== newValue) this.applyFilter();
-  }
-
-  async loadAlerts() {
-    try {
-      const response = await fetch("/Data/alerts.json");
-      if (!response.ok)
-        throw new Error(`Unable to load alerts (${response.status})`);
-      this.data = await response.json();
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   set data(alerts) {

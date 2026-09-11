@@ -363,18 +363,13 @@ class ActivityTable extends FASTElement {
   currentPage = 1;
   selectedActivity = null;
   visibleCount = 0;
-  hasExternalData = false;
   visibleActivities = [];
   sortKey = "timestamp";
   sortDirection = "descending";
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.hasExternalData) {
-      this.refresh();
-    } else {
-      this.loadActivities();
-    }
+    this.refresh();
   }
 
   pageSizeAttributeChanged(oldValue, newValue) {
@@ -385,7 +380,6 @@ class ActivityTable extends FASTElement {
   }
 
   set data(activities) {
-    this.hasExternalData = true;
     this.activities = Array.isArray(activities) ? activities : [];
     this.currentPage = 1;
     this.refresh();
@@ -398,19 +392,6 @@ class ActivityTable extends FASTElement {
   get pageSize() {
     const value = Number.parseInt(this.pageSizeAttribute, 10);
     return Number.isInteger(value) && value > 0 ? value : 5;
-  }
-
-  async loadActivities() {
-    try {
-      const response = await fetch("/Data/activity.json");
-      if (!response.ok)
-        throw new Error(`Unable to load activity (${response.status})`);
-      this.data = await response.json();
-    } catch (error) {
-      this.activities = [];
-      this.refresh();
-      console.error(error);
-    }
   }
 
   onFilterInput(event) {

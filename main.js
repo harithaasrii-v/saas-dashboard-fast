@@ -31,13 +31,18 @@ async function loadDashboardMetrics() {
       alertsResponse.json(),
       servicesResponse.json(),
     ]);
+
+    // ─── Metric Card Calculations ──────────────────────────────
     const failedActions = activity.filter(
       (item) => item.status === "failed",
     ).length;
+
     const openAlerts = alerts.filter((alert) => alert.status === "open");
+
     const criticalAlerts = openAlerts.filter(
       (alert) => alert.severity === "critical",
     ).length;
+
     const averageResponseTime = services.length
       ? Math.round(
           services.reduce(
@@ -46,6 +51,7 @@ async function loadDashboardMetrics() {
           ) / services.length,
         )
       : 0;
+
     const metrics = {
       "unique-users": {
         value: new Set(activity.map((item) => item.user)).size,
@@ -69,9 +75,15 @@ async function loadDashboardMetrics() {
       },
     };
 
+    // ─── Push Data to Metric Cards ─────────────────────────────
     metricCards.forEach((card) => {
       card.data = { title: card.cardTitle, ...metrics[card.dataset.metric] };
     });
+
+    // ─── Push Data to Components ───────────────────────────────
+    document.querySelector("activity-table").data = activity;
+    document.querySelector("alert-list").data = alerts;
+    document.querySelector("service-status").data = services;
   } catch (error) {
     console.error(error);
   }

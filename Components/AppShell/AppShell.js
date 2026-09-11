@@ -7,26 +7,20 @@ const template = html`
       <nav aria-label="Primary navigation">
         <a
           href="#home"
-          data-section="home"
           aria-current="${(x) =>
             x.currentSection === "home" ? "page" : "false"}"
-          @click="${(x, c) => x.onNavigation(c.event)}"
           >Home</a
         >
         <a
           href="#alerts"
-          data-section="alerts"
           aria-current="${(x) =>
             x.currentSection === "alerts" ? "page" : "false"}"
-          @click="${(x, c) => x.onNavigation(c.event)}"
           >Alerts</a
         >
         <a
           href="#activity"
-          data-section="activity"
           aria-current="${(x) =>
             x.currentSection === "activity" ? "page" : "false"}"
-          @click="${(x, c) => x.onNavigation(c.event)}"
           >Activity</a
         >
       </nav>
@@ -215,18 +209,6 @@ class AppShell extends FASTElement {
   disconnectedCallback() {
     window.removeEventListener("hashchange", this.onHashChange);
     super.disconnectedCallback();
-  }
-
-  onNavigation(event) {
-    event.preventDefault();
-    const section = event.currentTarget.dataset.section;
-    this.setSection(section);
-    window.history.replaceState(null, "", `#${section}`);
-    this.$emit(
-      "section-selected",
-      { section },
-      { bubbles: true, composed: true },
-    );
   }
 
   setSection(section) {
