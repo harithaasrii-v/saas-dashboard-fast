@@ -161,11 +161,6 @@ class ToastMessage extends FASTElement {
   }
 }
 
-Observable.defineProperty(ToastMessage.prototype, "toastTitle");
-Observable.defineProperty(ToastMessage.prototype, "message");
-Observable.defineProperty(ToastMessage.prototype, "type");
-Observable.defineProperty(ToastMessage.prototype, "duration");
-
 ToastMessage.define({
   name: "toast-message",
   template,

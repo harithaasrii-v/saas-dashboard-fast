@@ -516,7 +516,6 @@ class ActivityTable extends FASTElement {
   "currentPage",
   "selectedActivity",
   "visibleCount",
-  "pageSizeAttribute",
   "visibleActivities",
   "sortKey",
   "sortDirection",

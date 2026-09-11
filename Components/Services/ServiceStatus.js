@@ -247,7 +247,7 @@ class ServiceStatus extends FASTElement {
   }
 }
 
-["services", "visibleServices", "status"].forEach((property) =>
+["services", "visibleServices"].forEach((property) =>
   Observable.defineProperty(ServiceStatus.prototype, property),
 );
 

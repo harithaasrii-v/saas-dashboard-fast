@@ -194,6 +194,12 @@ class AppShell extends FASTElement {
     this.onHashChange = () => this.setSection(window.location.hash.slice(1));
   }
 
+  propagateTheme() {
+    this.querySelectorAll(
+      "service-status, alert-list, app-modal, metric-card, activity-table, toast-container, alert-item, toast-message",
+    ).forEach((component) => component.setAttribute("theme", this.theme));
+  }
+
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener("hashchange", this.onHashChange);
@@ -202,7 +208,7 @@ class AppShell extends FASTElement {
       ? "dark"
       : "light";
     this.theme = saved || preferred;
-    this.applyTheme();
+    this.propagateTheme();
     this.setSection(window.location.hash.slice(1) || "home");
   }
 
@@ -237,6 +243,7 @@ class AppShell extends FASTElement {
   toggleTheme() {
     this.theme = this.theme === "dark" ? "light" : "dark";
     localStorage.setItem("theme", this.theme);
+    this.propagateTheme();
     this.$emit(
       "theme-changed",
       { theme: this.theme },
@@ -252,40 +259,8 @@ class AppShell extends FASTElement {
       { bubbles: true, composed: true },
     );
   }
-
-  themeChanged() {
-    this.applyTheme();
-  }
-
-  applyTheme() {
-    const values =
-      this.theme === "dark"
-        ? {
-            "--shell-ink": "#edf5f6",
-            "--shell-surface": "#1c2b31",
-            "--shell-border": "#38505a",
-            "--shell-background": "#102026",
-            "--shell-accent": "#08171c",
-            "--shell-muted": "#aec1c8",
-          }
-        : {
-            "--shell-ink": "#18303a",
-            "--shell-surface": "#ffffff",
-            "--shell-border": "#d9e2e8",
-            "--shell-background": "#f3f6f7",
-            "--shell-accent": "#153b4a",
-            "--shell-muted": "#63747d",
-          };
-    Object.entries(values).forEach(([name, value]) =>
-      this.style.setProperty(name, value),
-    );
-    this.querySelectorAll(
-      "service-status, alert-list, app-modal, metric-card, activity-table, toast-container, alert-item, toast-message",
-    ).forEach((component) => component.setAttribute("theme", this.theme));
-  }
 }
 
-Observable.defineProperty(AppShell.prototype, "theme");
 Observable.defineProperty(AppShell.prototype, "currentSection");
 AppShell.define({
   name: "app-shell",

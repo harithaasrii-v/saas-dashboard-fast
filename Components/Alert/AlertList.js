@@ -160,7 +160,7 @@ class AlertList extends FASTElement {
   }
 }
 
-["alerts", "visibleAlerts", "filter"].forEach((property) =>
+["alerts", "visibleAlerts"].forEach((property) =>
   Observable.defineProperty(AlertList.prototype, property),
 );
 

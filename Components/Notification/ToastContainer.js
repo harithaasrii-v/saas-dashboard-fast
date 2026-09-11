@@ -65,9 +65,6 @@ class ToastContainer extends FASTElement {
   }
 }
 
-Observable.defineProperty(ToastContainer.prototype, "theme");
-Observable.defineProperty(ToastContainer.prototype, "position");
-
 ToastContainer.define({
   name: "toast-container",
   template,
